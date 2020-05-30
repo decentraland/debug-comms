@@ -9,4 +9,6 @@ COPY index.ts /app/index.ts
 COPY tsconfig.json /app/tsconfig.json
 RUN npm run build
 
+EXPOSE 2500
+
 ENTRYPOINT entrypoint.sh
