@@ -75,8 +75,8 @@ async function getPNG(
 const app = express();
 app.use(cors());
 
-app.get("/health", () => {
-  res.end('{"ok": true}')
+app.get("/health", (req, res) => {
+  res.status(200).end('{"ok": true}')
 })
 app.get("/graph/:server/:layer/debug", async (req, res, next) => {
   const { server, layer } = req.params;

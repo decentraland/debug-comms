@@ -11,4 +11,5 @@ RUN npm run build
 
 EXPOSE 2500
 
-ENTRYPOINT entrypoint.sh
+COPY entrypoint.sh /app/entrypoint.sh
+ENTRYPOINT /app/entrypoint.sh
