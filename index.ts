@@ -1,4 +1,7 @@
 import fetch from 'node-fetch'
+import * as express from 'express'
+import * as cors from 'cors'
+import * as graphviz from 'viz.js'
 
 function toGraphString(input: { id: string, connectedPeerIds: string[] }[]) {
   const mapId: Record<string, string> = {}
@@ -18,16 +21,61 @@ function toGraphString(input: { id: string, connectedPeerIds: string[] }[]) {
   })
   return `digraph G {\n${edges.flat().join('\n')}\n}`
 }
-
-async function main() {
-  const server = 'peer.decentraland.org'
-  const layer = 'amber'
+async function getTopology(server: string, layer: string) {
   const url = `https://${server}/comms/layers/${layer}/topology`
   const request = await fetch(url)
-  const result = await request.json()
-
-  const graphDot = toGraphString(result)
-  console.log(graphDot)
+  return await request.json()
 }
 
-main().catch(e => console.log(e))
+async function getPNG(topology: { id: string, connectedPeerIds: string[] }[]) {
+  return new Promise((resolve, reject) => {
+    try {
+      const result = toGraphString(topology)
+      const child = spawn('dot', ['-Tpng'])
+      const chunks: Buffer[] = []
+      child.on('data', (data) => {
+        console.log(`streamed ${data.length} bytes`)
+        chunks.push(data)
+      })
+      child.on('close', code => {
+        console.log(`closing with ${code}`)
+        if (code !== 0) {
+          return reject(`{"ok": false}`)
+        }
+        return resolve(Buffer.concat(chunks))
+      })
+      child.stdin.write(result)
+      child.stdin.end()
+    } catch (e) {
+      reject(e.message)
+    }
+  })
+}
+
+const app = express()
+app.use(cors())
+
+app.get('/graph/:server/:layer/debug', async (req, res, next) => {
+  const { server, layer } = req.params
+  const topology = await getTopology(server, layer)
+
+  try {
+    const result = toGraphString(topology)
+    return res.end(result)
+  } catch (e) {
+    res.status(500).end(`{"ok": false, "msg": "${e.message}"}`)
+  }
+})
+app.get('/graph/:server/:layer', async (req, res, next) => {
+  const { server, layer } = req.params
+  const topology = await getTopology(server, layer)
+
+  try {
+    const png = await getPNG(topology)
+    return res.end(png)
+  } catch (e) {
+    res.status(500).end(`{"ok": false, "msg": "${e.message}"}`)
+  }
+})
+
+app.listen(2500)

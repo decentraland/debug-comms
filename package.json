@@ -3,13 +3,19 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "dependencies": {
+    "@types/express": "^4.17.6",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "jsviz": "^1.0.1",
+    "node-fetch": "^2.6.0",
+    "typescript": "^3.9.3",
+    "viz.js": "^2.1.2"
+  },
+  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "node-fetch": "^2.6.0",
-    "typescript": "^3.9.3"
-  }
+  "license": "ISC"
 }
