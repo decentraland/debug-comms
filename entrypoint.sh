@@ -1,3 +1,3 @@
 #! /bin/sh
 
-npm start
+/usr/bin/node /app/index.js
