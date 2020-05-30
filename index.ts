@@ -74,6 +74,10 @@ async function getPNG(
 
 const app = express();
 app.use(cors());
+app.use((req, res, next) => {
+  console.log(`request to: ${req.path}`)
+  next()
+})
 
 app.get("/health", (req, res) => {
   res.status(200).end('{"ok": true}')
@@ -101,4 +105,6 @@ app.get("/graph/:server/:layer", async (req, res, next) => {
   }
 });
 
-app.listen(2500);
+app.listen(2500, () => {
+  console.log(`:: listening on port 2500`)
+});
