@@ -11,6 +11,14 @@ app.use((req, res, next) => {
   next();
 });
 
+app.get("/", (req, res) => {
+  const url = 'https://debug-comms.decentraland.io/graph/peer.decentraland.org/amber'
+  const repo = 'https://github.com/decentraland/debug-comms'
+  res.status(200).end(`
+    <p>Try accessing something like: <a href="${url}">${url}</a></p>
+    <p>Repo: <a href="${repo}">${repo}</a></p>`);
+});
+
 app.get("/health", (req, res) => {
   res.status(200).end('{"ok": true}');
 });
