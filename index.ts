@@ -1,7 +1,7 @@
 import cors from "cors";
 import express from "express";
-import { getTopology } from "./getTopology";
 import { getPNG } from "./getPNG";
+import { getTopology } from "./getTopology";
 import { toGraphString } from "./toGraphString";
 
 const app = express();
@@ -12,8 +12,9 @@ app.use((req, res, next) => {
 });
 
 app.get("/", (req, res) => {
-  const url = 'https://debug-comms.decentraland.io/graph/peer.decentraland.org/amber'
-  const repo = 'https://github.com/decentraland/debug-comms'
+  const url =
+    "https://debug-comms.decentraland.io/graph/peer.decentraland.org/amber";
+  const repo = "https://github.com/decentraland/debug-comms";
   res.status(200).end(`
     <p>Try accessing something like: <a href="${url}">${url}</a></p>
     <p>Repo: <a href="${repo}">${repo}</a></p>`);

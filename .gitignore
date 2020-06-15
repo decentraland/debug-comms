@@ -1,2 +1,5 @@
 graph.*
+.tsbuildinfo
+*.js
+*.js.map
 node_modules
