@@ -11,7 +11,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "jsviz": "^1.0.1",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.7",
     "typescript": "^3.9.3",
     "viz.js": "^2.1.2"
   },
